@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Scaffold Tool</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:#f5f5f2;color:#111;padding:24px 16px 60px}
+  h1{font-size:22px;font-weight:600;margin-bottom:4px}
+  .subtitle{font-size:13px;color:#666;margin-bottom:20px}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .ctrl-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px}
+  .ctrl-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.05em}
+  select{width:100%;padding:8px 10px;font-size:14px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#111;cursor:pointer}
+  .wb-panel{background:#f0efe9;border:1px solid #ddd;border-radius:10px;padding:14px;margin-bottom:18px}
+  .wb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .wb-title{font-size:13px;font-weight:600}
+  .wb-hint{font-size:11px;color:#888}
+  .wb-words{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .wb-word{display:inline-block;background:#fff;border:1px solid #ccc;border-radius:6px;font-size:13px;color:#111;padding:4px 10px;cursor:pointer;user-select:none}
+  .wb-word:hover{background:#e8f0fe;color:#1a56c4;border-color:#a0b8e8}
+  .wb-add-row{display:flex;gap:6px}
+  .wb-add-row input{flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid #ccc;background:#fff}
+  .wb-add-row button{padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer}
+  .wb-add-row button:hover{background:#f0efe9}
+  .scaffold-wrap{display:flex;flex-direction:column;gap:12px}
+  .sbox{border-radius:10px;border:1px solid #ddd;overflow:hidden;background:#fff}
+  .sbox-head{padding:10px 14px;display:flex;align-items:center;gap:10px}
+  .sbox-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+  .sbox-name{font-size:14px;font-weight:600}
+  .sbox-hint{font-size:12px;margin-top:2px}
+  .sbox-body{padding:12px 14px 16px;border-top:1px solid #eee;background:#fff}
+  .starter-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .starter{display:inline-block;background:#f5f5f2;border:1px solid #ddd;border-radius:6px;font-size:12px;color:#555;padding:3px 9px;font-style:italic;cursor:pointer}
+  .starter:hover{background:#fff;border-color:#aaa;color:#333}
+  textarea{width:100%;border:none;border-bottom:1.5px solid #ccc;background:transparent;font-size:15px;color:#111;padding:6px 2px;resize:none;outline:none;line-height:1.7;font-family:Arial,sans-serif}
+  textarea:focus{border-bottom-color:#555}
+  .sub-label{font-size:12px;color:#666;margin:12px 0 6px;font-weight:600}
+  .student-info{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .info-field{flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px}
+  .info-field label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.05em}
+  .info-field input{border:none;border-bottom:1.5px solid #ccc;font-size:14px;padding:4px 2px;outline:none;background:transparent;font-family:Arial,sans-serif}
+  .info-field input:focus{border-bottom-color:#555}
+  .foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .foot button{flex:1;min-width:140px;padding:10px 16px;font-size:14px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#111;cursor:pointer;font-family:Arial,sans-serif}
+  .foot button:hover{background:#f0efe9}
+  .btn-print{background:#1a56c4 !important;color:#fff !important;border-color:#1a56c4 !important}
+  .btn-print:hover{background:#1446a8 !important}
+  .btn-export{background:#188038 !important;color:#fff !important;border-color:#188038 !important}
+  .btn-export:hover{background:#146830 !important}
+
+  @media print {
+    body{background:#fff;padding:20px}
+    .controls,.foot,.wb-add-row,.wb-hint,.starter,.print-hide{display:none !important}
+    .wb-panel{background:#f9f9f7;border:1px solid #ddd;page-break-inside:avoid}
+    .wb-top{margin-bottom:4px}
+    .wb-words{margin-bottom:0}
+    .wb-word{pointer-events:none;font-size:12px;padding:3px 8px}
+    .sbox{page-break-inside:avoid;margin-bottom:14px;border:1px solid #ccc}
+    textarea{min-height:44px;border-bottom:1px solid #aaa}
+    h1{font-size:18px}
+  }
+</style>
+</head>
+<body>
+
+<h1>Writing Scaffold Tool</h1>
+<p class="subtitle">Select a grade level and paragraph type, then fill in the boxes to plan your writing.</p>
+
+<div class="student-info print-hide" style="display:none" id="student-info-row">
+  <div class="info-field"><label>Student name</label><input type="text" placeholder="First Last" id="s-name"/></div>
+  <div class="info-field"><label>Date</label><input type="text" placeholder="MM/DD/YYYY" id="s-date"/></div>
+  <div class="info-field"><label>Class / period</label><input type="text" placeholder="e.g. Period 3" id="s-class"/></div>
+</div>
+
+<div id="student-info-print" style="display:none;margin-bottom:18px">
+  <p style="font-size:14px"><strong>Name:</strong> <span id="p-name"></span> &nbsp;&nbsp; <strong>Date:</strong> <span id="p-date"></span> &nbsp;&nbsp; <strong>Class:</strong> <span id="p-class"></span></p>
+</div>
+
+<div class="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Grade level</span>
+    <select id="grade" onchange="render()">
+      <option value="elem">Elementary (K–5)</option>
+      <option value="mid">Middle school (6–8)</option>
+      <option value="high">High school (9–12)</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Paragraph type</span>
+    <select id="ptype" onchange="render()">
+      <option value="opinion">Opinion</option>
+      <option value="informational">Informational / expository</option>
+      <option value="narrative">Narrative</option>
+      <option value="compare">Compare and contrast</option>
+      <option value="problem">Problem and solution</option>
+    </select>
+  </div>
+  <div class="ctrl-group" style="justify-content:flex-end;flex-direction:row;align-items:flex-end">
+    <label style="font-size:12px;color:#666;display:flex;align-items:center;gap:6px;cursor:pointer">
+      <input type="checkbox" id="show-info" onchange="toggleInfo()"> Show student info fields
+    </label>
+  </div>
+</div>
+
+<div class="wb-panel">
+  <div class="wb-top">
+    <span class="wb-title">Word bank</span>
+    <span class="wb-hint print-hide">Click a word to insert it into your last typed box</span>
+  </div>
+  <div class="wb-words" id="wb-words"></div>
+  <div class="wb-add-row print-hide">
+    <input id="wb-input" type="text" placeholder="Add your own word..." maxlength="40" onkeydown="if(event.key==='Enter')addWord()"/>
+    <button onclick="addWord()">Add</button>
+    <button onclick="resetWords()">Reset</button>
+  </div>
+</div>
+
+<div id="scaffold-out" class="scaffold-wrap"></div>
+
+<div class="foot print-hide">
+  <button class="btn-print" onclick="printScaffold()">Print / save as PDF</button>
+  <button onclick="clearAll()">Clear all</button>
+  <button class="btn-export" onclick="exportDoc()">Export for Google Docs</button>
+</div>
+
+<script>
+const WORDBANKS={
+  opinion:{
+    elem:["think","believe","because","reason","example","important","agree","disagree","opinion","feel","should","must","prove","fact"],
+    mid:["argue","claim","evidence","support","oppose","perspective","significant","furthermore","however","conclude","justify","logical","therefore","assert"],
+    high:["contend","advocate","refute","substantiate","rhetoric","premise","counterargument","concede","inference","nuanced","warrant","fallacy","persuasive","compelling"]
+  },
+  informational:{
+    elem:["fact","learn","example","describe","explain","important","topic","detail","shows","tells","also","first","next","last"],
+    mid:["define","analyze","illustrate","demonstrate","indicate","process","characteristic","function","structure","category","evidence","conclude","summarize","identify"],
+    high:["synthesize","evaluate","contextualize","illuminate","articulate","interrogate","implication","phenomenon","underlying","framework","methodology","critique","signify","convey"]
+  },
+  narrative:{
+    elem:["suddenly","then","next","finally","because","felt","scared","excited","decided","wondered","realized","remembered","before","after"],
+    mid:["tension","conflict","perspective","vivid","moment","reflect","transform","sensory","foreshadow","climax","resolve","emotion","anticipate","describe"],
+    high:["introspection","juxtapose","epiphany","motif","voice","subtext","vignette","pacing","metaphor","ambivalence","threshold","consciousness","resonate","illuminate"]
+  },
+  compare:{
+    elem:["alike","different","both","same","but","however","while","also","too","similar","unlike","instead","although","yet"],
+    mid:["similarly","contrast","whereas","despite","nevertheless","distinguish","parallel","diverge","comparable","conversely","accordingly","mutual","differ","whereas"],
+    high:["analogous","dichotomy","divergent","congruent","juxtaposition","asymmetry","nuanced","paradox","correlate","tension","convergence","disparity","reciprocal","antithetical"]
+  },
+  problem:{
+    elem:["problem","fix","help","better","need","because","should","could","safe","healthy","important","try","change","idea"],
+    mid:["issue","solution","impact","consequence","address","implement","prevent","reduce","increase","effective","strategy","stakeholder","propose","significant"],
+    high:["systemic","root cause","intervention","mitigate","exacerbate","framework","policy","reform","sustainable","inequity","infrastructure","catalyst","viable","accountability"]
+  }
+};
+
+const DATA={
+  opinion:{
+    elem:{title:"Opinion paragraph",grade:"Elementary (K–5)",color:{bg:"#E8F5EE",border:"#4CAF82",numBg:"#1D9E75",numText:"#fff",label:"#0F6E56",hint:"#2a8060"},
+      boxes:[
+        {num:"1",name:"My opinion",hint:"What do you think? Say it clearly.",starters:["I think...","I believe...","In my opinion..."],rows:2},
+        {num:"2",name:"Reason 1",hint:"Why do you think that? Give your first reason.",starters:["One reason is...","First,..."],rows:2,sub:[{label:"An example or detail:",starters:["For example,...","I know this because..."],rows:2}]},
+        {num:"3",name:"Reason 2",hint:"Give another reason.",starters:["Another reason is...","Also,..."],rows:2,sub:[{label:"An example or detail:",starters:["For example,...","This shows that..."],rows:2}]},
+        {num:"4",name:"My closing",hint:"Finish strong — remind the reader what you think.",starters:["That is why I think...","In conclusion,...","So, I believe..."],rows:2}
+      ]},
+    mid:{title:"Opinion / argument paragraph",grade:"Middle school (6–8)",color:{bg:"#E8F5EE",border:"#4CAF82",numBg:"#1D9E75",numText:"#fff",label:"#0F6E56",hint:"#2a8060"},
+      boxes:[
+        {num:"1",name:"Claim",hint:"State your argument clearly in one sentence.",starters:["I argue that...","It is clear that...","___ should/should not..."],rows:2},
+        {num:"2",name:"Reason + evidence",hint:"Your strongest reason, backed by a fact or example.",starters:["First,...","To begin with,..."],rows:2,sub:[{label:"Evidence (fact, quote, statistic):",starters:["According to...","Research shows that...","For example,..."],rows:2}]},
+        {num:"3",name:"Second reason + evidence",hint:"Another reason with support.",starters:["Additionally,...","Furthermore,...","A second reason is..."],rows:2,sub:[{label:"Evidence:",starters:["Statistics show...","For instance,..."],rows:2}]},
+        {num:"4",name:"Counter-argument + rebuttal",hint:"Acknowledge the other side, then push back.",starters:["Some people believe...","Although some argue..."],rows:2,sub:[{label:"Your rebuttal:",starters:["However,...","In reality,...","Despite this,..."],rows:2}]},
+        {num:"5",name:"Conclusion",hint:"Restate your claim and call the reader to think or act.",starters:["In conclusion,...","Ultimately,...","For these reasons,..."],rows:2}
+      ]},
+    high:{title:"Argumentative paragraph",grade:"High school (9–12)",color:{bg:"#E8F5EE",border:"#4CAF82",numBg:"#1D9E75",numText:"#fff",label:"#0F6E56",hint:"#2a8060"},
+      boxes:[
+        {num:"1",name:"Claim",hint:"A debatable, specific claim sentence.",starters:["This paper argues...","The evidence suggests that...","Contrary to popular belief,..."],rows:2},
+        {num:"2",name:"Context / background",hint:"Brief context the reader needs to understand your claim.",starters:["In recent years,...","Historically,...","To understand this issue,..."],rows:2},
+        {num:"3",name:"Evidence 1",hint:"Strongest piece of evidence — cite your source.",starters:["According to [Author/Source],...","A [year] study found that...","Data from ___ indicates..."],rows:2,sub:[{label:"Analysis (explain why this evidence supports your claim):",starters:["This demonstrates...","This is significant because...","In other words,..."],rows:2}]},
+        {num:"4",name:"Evidence 2",hint:"Second piece of evidence.",starters:["Furthermore,...","Additional evidence includes...","[Author] also notes that..."],rows:2,sub:[{label:"Analysis:",starters:["This reveals...","This further supports...","Consequently,..."],rows:2}]},
+        {num:"5",name:"Counter-argument + rebuttal",hint:"Steelman the opposing view, then refute it with evidence.",starters:["Critics may argue...","One might contend that...","While it is true that..."],rows:2,sub:[{label:"Rebuttal:",starters:["However, this view overlooks...","Nonetheless,..."],rows:2}]},
+        {num:"6",name:"Conclusion",hint:"Synthesize — what is the broader significance?",starters:["Ultimately,...","Taken together, these points suggest...","The implications of this are..."],rows:2}
+      ]}
+  },
+  informational:{
+    elem:{title:"Informational paragraph",grade:"Elementary (K–5)",color:{bg:"#E8F0FB",border:"#5B9BDD",numBg:"#2878CC",numText:"#fff",label:"#185098",hint:"#2060a0"},
+      boxes:[
+        {num:"1",name:"Topic sentence",hint:"Tell the reader what this paragraph is about.",starters:["This paragraph is about...","Did you know that...","___ is important because..."],rows:2},
+        {num:"2",name:"Fact 1",hint:"Share an interesting fact.",starters:["One fact is...","First,..."],rows:2},
+        {num:"3",name:"Fact 2",hint:"Share another fact.",starters:["Another fact is...","Also,...","Second,..."],rows:2},
+        {num:"4",name:"Fact 3",hint:"One more fact or detail.",starters:["Finally,...","A third fact is..."],rows:2},
+        {num:"5",name:"Closing sentence",hint:"Wrap up what you shared.",starters:["As you can see,...","Now you know that...","That is why ___ is so interesting."],rows:2}
+      ]},
+    mid:{title:"Expository paragraph",grade:"Middle school (6–8)",color:{bg:"#E8F0FB",border:"#5B9BDD",numBg:"#2878CC",numText:"#fff",label:"#185098",hint:"#2060a0"},
+      boxes:[
+        {num:"1",name:"Topic sentence",hint:"Introduce the topic and your main point about it.",starters:["___ plays a key role in...","One of the most important aspects of ___ is...","___ can be defined as..."],rows:2},
+        {num:"2",name:"Point 1 + explanation",hint:"First key point with an explanation.",starters:["To begin,...","One major aspect is..."],rows:2,sub:[{label:"Supporting detail or example:",starters:["For example,...","This means that...","In other words,..."],rows:2}]},
+        {num:"3",name:"Point 2 + explanation",hint:"Second key point.",starters:["Additionally,...","Another important point is..."],rows:2,sub:[{label:"Supporting detail or example:",starters:["For instance,...","This demonstrates..."],rows:2}]},
+        {num:"4",name:"Point 3 + explanation",hint:"Third key point.",starters:["Furthermore,...","A third consideration is..."],rows:2,sub:[{label:"Supporting detail:",starters:["This is shown by...","As a result,..."],rows:2}]},
+        {num:"5",name:"Conclusion",hint:"Summarize and connect to the topic's importance.",starters:["In summary,...","Clearly,...","Understanding ___ helps us..."],rows:2}
+      ]},
+    high:{title:"Analytical / expository paragraph",grade:"High school (9–12)",color:{bg:"#E8F0FB",border:"#5B9BDD",numBg:"#2878CC",numText:"#fff",label:"#185098",hint:"#2060a0"},
+      boxes:[
+        {num:"1",name:"Topic sentence with controlling idea",hint:"Introduce the topic AND your specific angle or insight.",starters:["An analysis of ___ reveals...","___ fundamentally shapes ___ because...","Central to understanding ___ is..."],rows:2},
+        {num:"2",name:"Context",hint:"Background the reader needs.",starters:["Historically,...","In the context of...","It is important to note that..."],rows:2},
+        {num:"3",name:"Evidence + analysis 1",hint:"Cite a source, then analyze — don't let evidence speak for itself.",starters:["According to [Author],...","[Author] asserts that..."],rows:2,sub:[{label:"Analysis:",starters:["This suggests that...","The significance of this is...","In other words,..."],rows:2}]},
+        {num:"4",name:"Evidence + analysis 2",hint:"Second source or piece of evidence.",starters:["Building on this,...","Similarly, [Author] notes...","In contrast,..."],rows:2,sub:[{label:"Analysis:",starters:["This further illustrates...","What this reveals is...","This connects to..."],rows:2}]},
+        {num:"5",name:"Synthesis / conclusion",hint:"Bring your points together — what is the larger takeaway?",starters:["Taken together,...","Ultimately, this analysis shows...","These findings indicate that..."],rows:2}
+      ]}
+  },
+  narrative:{
+    elem:{title:"Narrative paragraph",grade:"Elementary (K–5)",color:{bg:"#FEF3E2",border:"#E8A030",numBg:"#C07010",numText:"#fff",label:"#7A4800",hint:"#9a6010"},
+      boxes:[
+        {num:"1",name:"Setting",hint:"When and where does this happen?",starters:["One day,...","It was a ___ day when...","In ___,..."],rows:2},
+        {num:"2",name:"The problem or event",hint:"What happens first? What is the problem?",starters:["Suddenly,...","Then,...","The problem was..."],rows:2},
+        {num:"3",name:"What I / the character did",hint:"How did you or the character respond?",starters:["I decided to...","Right away,...","The character felt ___ so they..."],rows:2},
+        {num:"4",name:"How it ended",hint:"How was the problem solved?",starters:["Finally,...","In the end,...","After that,..."],rows:2},
+        {num:"5",name:"Lesson or feeling",hint:"What did you or the character learn or feel?",starters:["I learned that...","This showed me...","From this experience,..."],rows:2}
+      ]},
+    mid:{title:"Narrative paragraph",grade:"Middle school (6–8)",color:{bg:"#FEF3E2",border:"#E8A030",numBg:"#C07010",numText:"#fff",label:"#7A4800",hint:"#9a6010"},
+      boxes:[
+        {num:"1",name:"Hook + setting",hint:"Pull the reader in. Use a vivid detail, action, or feeling.",starters:["The moment I...","I never expected...","The smell of ___ filled the air as..."],rows:2},
+        {num:"2",name:"Rising action / conflict",hint:"What tension or event builds?",starters:["Without warning,...","Everything changed when...","I realized that..."],rows:2,sub:[{label:"Sensory detail (sight, sound, feel):",starters:["I could see...","The sound of...","My heart raced as..."],rows:2}]},
+        {num:"3",name:"Climax",hint:"The most important or intense moment.",starters:["At that moment,...","The turning point came when...","I had to decide..."],rows:2},
+        {num:"4",name:"Resolution",hint:"How does the situation resolve?",starters:["In the end,...","Looking back,...","Everything settled when..."],rows:2},
+        {num:"5",name:"Reflection",hint:"What insight or change does the narrator take away?",starters:["This experience taught me...","Since then, I have...","What I understand now is..."],rows:2}
+      ]},
+    high:{title:"Narrative / personal essay paragraph",grade:"High school (9–12)",color:{bg:"#FEF3E2",border:"#E8A030",numBg:"#C07010",numText:"#fff",label:"#7A4800",hint:"#9a6010"},
+      boxes:[
+        {num:"1",name:"In medias res hook",hint:"Drop the reader into the middle of a moment — no generic openings.",starters:["At [specific moment], I...","The [object/place/person] that changed everything was...","I did not know then that..."],rows:2},
+        {num:"2",name:"Context",hint:"Brief context — who, where, what was at stake.",starters:["At the time,...","To understand why this mattered,...","For as long as I could remember,..."],rows:2},
+        {num:"3",name:"Conflict / complication",hint:"The tension or challenge that drives the narrative.",starters:["What I had not considered was...","The complication arose when...","I was forced to confront..."],rows:2,sub:[{label:"Interior thought (what were you thinking/feeling in the moment):",starters:["I remember thinking...","A part of me wondered...","My instinct told me..."],rows:2}]},
+        {num:"4",name:"Turning point",hint:"The decision, realization, or action that shifts things.",starters:["That was when I decided...","The realization hit me that...","For the first time,..."],rows:2},
+        {num:"5",name:"Resolution + reflection",hint:"Outcome and a layered takeaway — avoid clichés.",starters:["What I carry from that experience is...","The version of me that emerged understood...","This moment revealed that..."],rows:2}
+      ]}
+  },
+  compare:{
+    elem:{title:"Compare and contrast paragraph",grade:"Elementary (K–5)",color:{bg:"#F0EEFF",border:"#9088D8",numBg:"#6B5FC8",numText:"#fff",label:"#3D3490",hint:"#5548a8"},
+      boxes:[
+        {num:"1",name:"Topic sentence",hint:"Name the two things you are comparing.",starters:["___ and ___ are alike and different in many ways.","___ and ___ can be compared."],rows:2},
+        {num:"2",name:"How they are the same",hint:"What do both things have in common?",starters:["Both ___ and ___ ...","One way they are alike is...","They are similar because..."],rows:2},
+        {num:"3",name:"How they are different — Thing 1",hint:"What is special about the first thing?",starters:["___ is different because...","Unlike ___, ___ ...","On the one hand, ___ ..."],rows:2},
+        {num:"4",name:"How they are different — Thing 2",hint:"What is special about the second thing?",starters:["On the other hand, ___ ...","While ___ ..., ___ ..."],rows:2},
+        {num:"5",name:"Closing",hint:"Finish by saying something about both.",starters:["Even though they are different,...","Both are important because...","As you can see,..."],rows:2}
+      ]},
+    mid:{title:"Compare and contrast paragraph",grade:"Middle school (6–8)",color:{bg:"#F0EEFF",border:"#9088D8",numBg:"#6B5FC8",numText:"#fff",label:"#3D3490",hint:"#5548a8"},
+      boxes:[
+        {num:"1",name:"Topic sentence",hint:"Introduce both subjects and hint at the basis for comparison.",starters:["Although ___ and ___ share ___, they differ significantly in ___.","While both ___ and ___ ___, they approach ___ in distinct ways."],rows:2},
+        {num:"2",name:"Similarity",hint:"A meaningful similarity, with explanation.",starters:["Both ___ and ___ ...","Like ___, ___ also...","Similarly,..."],rows:2,sub:[{label:"Explain why this similarity matters:",starters:["This shared quality suggests...","This is significant because..."],rows:2}]},
+        {num:"3",name:"Difference 1",hint:"First key difference.",starters:["However, ___ differs from ___ in that...","In contrast,...","Unlike ___, ___ ..."],rows:2},
+        {num:"4",name:"Difference 2",hint:"Second key difference.",starters:["Another distinction is...","Whereas ___ ..., ___ ...","On the other hand,..."],rows:2},
+        {num:"5",name:"Conclusion",hint:"Summarize and offer a judgment or insight.",starters:["Ultimately, while ___ and ___ share ___, they are fundamentally different in...","These comparisons reveal that..."],rows:2}
+      ]},
+    high:{title:"Comparative analysis paragraph",grade:"High school (9–12)",color:{bg:"#F0EEFF",border:"#9088D8",numBg:"#6B5FC8",numText:"#fff",label:"#3D3490",hint:"#5548a8"},
+      boxes:[
+        {num:"1",name:"Thesis / controlling idea",hint:"Make an argument about what the comparison reveals.",starters:["A comparison of ___ and ___ ultimately reveals...","Reading ___ alongside ___ challenges the assumption that..."],rows:2},
+        {num:"2",name:"Point of comparison 1 — Subject A",hint:"Analyze Subject A on your first point.",starters:["[Subject A] approaches ___ by...","[Author/Text A] suggests that..."],rows:2,sub:[{label:"Analysis:",starters:["This indicates...","What this reveals about [A] is..."],rows:2}]},
+        {num:"3",name:"Point of comparison 1 — Subject B",hint:"Analyze Subject B on the same point.",starters:["By contrast, [Subject B]...","Where [A] ___, [B] instead..."],rows:2,sub:[{label:"Analysis + connection to thesis:",starters:["This difference suggests...","Together, these illustrate..."],rows:2}]},
+        {num:"4",name:"Point of comparison 2",hint:"Second dimension, briefly analyzed for both subjects.",starters:["A second point of comparison is...","Beyond ___, the two also diverge in..."],rows:2},
+        {num:"5",name:"Synthesis",hint:"What does the full comparison tell us?",starters:["Placing these in dialogue reveals...","The tension between [A] and [B] reflects..."],rows:2}
+      ]}
+  },
+  problem:{
+    elem:{title:"Problem and solution paragraph",grade:"Elementary (K–5)",color:{bg:"#FDEEE8",border:"#E07050",numBg:"#C04020",numText:"#fff",label:"#882010",hint:"#a03020"},
+      boxes:[
+        {num:"1",name:"The problem",hint:"What is the problem? Why does it matter?",starters:["One problem is...","A big problem is that...","Many people have trouble with..."],rows:2},
+        {num:"2",name:"Why it is a problem",hint:"Explain why this problem is a problem.",starters:["This is a problem because...","It causes...","Without fixing this,..."],rows:2},
+        {num:"3",name:"My solution",hint:"What is your idea to fix it?",starters:["One solution is...","I think we should...","A good way to fix this is..."],rows:2},
+        {num:"4",name:"How the solution helps",hint:"Explain how your solution fixes the problem.",starters:["This would help because...","If we did this,...","This would make things better by..."],rows:2},
+        {num:"5",name:"Closing",hint:"Wrap up with a final thought.",starters:["That is why it is important to...","By doing this,...","Now we can see that..."],rows:2}
+      ]},
+    mid:{title:"Problem and solution paragraph",grade:"Middle school (6–8)",color:{bg:"#FDEEE8",border:"#E07050",numBg:"#C04020",numText:"#fff",label:"#882010",hint:"#a03020"},
+      boxes:[
+        {num:"1",name:"Problem statement",hint:"Clearly identify the problem and its scope.",starters:["One of the most pressing issues facing ___ is...","___ has become a growing concern because..."],rows:2},
+        {num:"2",name:"Causes / why it exists",hint:"What causes this problem?",starters:["This problem exists because...","A root cause is...","Several factors contribute, including..."],rows:2},
+        {num:"3",name:"Effects / why it matters",hint:"What are the consequences if the problem goes unsolved?",starters:["As a result,...","Without intervention,...","This affects ___ by..."],rows:2},
+        {num:"4",name:"Solution",hint:"Propose a specific, realistic solution.",starters:["One effective solution would be to...","A practical approach is...","___ could address this by..."],rows:2,sub:[{label:"Evidence or reasoning that supports this solution:",starters:["Research suggests...","For example, in ___,...","This works because..."],rows:2}]},
+        {num:"5",name:"Conclusion",hint:"Reinforce why action is needed.",starters:["Unless action is taken,...","By implementing this solution,...","Addressing this problem is critical because..."],rows:2}
+      ]},
+    high:{title:"Problem-solution analysis paragraph",grade:"High school (9–12)",color:{bg:"#FDEEE8",border:"#E07050",numBg:"#C04020",numText:"#fff",label:"#882010",hint:"#a03020"},
+      boxes:[
+        {num:"1",name:"Problem framing",hint:"Frame the problem with precision — scope, significance, and who is affected.",starters:["Despite [decades/years] of [policy/effort], ___ continues to...","At stake is not merely ___, but the broader question of..."],rows:2},
+        {num:"2",name:"Root cause analysis",hint:"What systemic or structural causes underlie the problem?",starters:["At its core, this problem stems from...","Rather than a single cause, ___ is the product of..."],rows:2},
+        {num:"3",name:"Current response + its limitations",hint:"What has been tried? Why has it been insufficient?",starters:["Existing approaches have failed to address...","While [policy/initiative] has made progress, it does not account for..."],rows:2},
+        {num:"4",name:"Proposed solution",hint:"A specific, evidence-backed solution with mechanisms explained.",starters:["A more effective approach would require...","By shifting from ___ to ___, stakeholders could..."],rows:2,sub:[{label:"Evidence + analysis:",starters:["[Author/Study] demonstrates that...","The mechanism here is..."],rows:2}]},
+        {num:"5",name:"Counterargument + rebuttal",hint:"Address likely objections to your solution.",starters:["Critics may contend that this solution is impractical because...","While concerns about ___ are valid,..."],rows:2},
+        {num:"6",name:"Conclusion",hint:"Broaden out — why does solving this matter beyond the immediate context?",starters:["The implications of addressing this extend beyond...","Ultimately, the question of ___ is inseparable from..."],rows:2}
+      ]}
+  }
+};
+
+let lastFocused=null;
+let currentWords=[];
+
+function toggleInfo(){
+  const show=document.getElementById('show-info').checked;
+  document.getElementById('student-info-row').style.display=show?'flex':'none';
+}
+
+function render(){
+  const grade=document.getElementById('grade').value;
+  const ptype=document.getElementById('ptype').value;
+  currentWords=[...WORDBANKS[ptype][grade]];
+  renderWordBank();
+  const cfg=DATA[ptype][grade];
+  const c=cfg.color;
+  let html='';
+  cfg.boxes.forEach(b=>{
+    html+=`<div class="sbox">
+      <div class="sbox-head" style="background:${c.bg};border-bottom:1px solid ${c.border}">
+        <div class="sbox-num" style="background:${c.numBg};color:${c.numText}">${b.num}</div>
+        <div>
+          <div class="sbox-name" style="color:${c.label}">${b.name}</div>
+          <div class="sbox-hint" style="color:${c.hint}">${b.hint}</div>
+        </div>
+      </div>
+      <div class="sbox-body">
+        <div class="starter-row print-hide">${b.starters.map(s=>`<span class="starter" onclick="fillNearest(this,'${s.replace(/'/g,"\\'")}')">${s}</span>`).join('')}</div>
+        <div class="print-starters" style="display:none;font-size:12px;color:#777;font-style:italic;margin-bottom:6px">${b.starters.join(' &nbsp;/&nbsp; ')}</div>
+        <textarea rows="${b.rows}" placeholder="Write here..." onfocus="lastFocused=this" aria-label="${b.name}"></textarea>
+        ${(b.sub||[]).map(s=>`
+          <div class="sub-label">${s.label}</div>
+          <div class="starter-row print-hide">${s.starters.map(st=>`<span class="starter" onclick="fillNearest(this,'${st.replace(/'/g,"\\'")}')">  ${st}</span>`).join('')}</div>
+          <div class="print-starters" style="display:none;font-size:12px;color:#777;font-style:italic;margin-bottom:6px">${s.starters.join(' &nbsp;/&nbsp; ')}</div>
+          <textarea rows="${s.rows}" placeholder="Write here..." onfocus="lastFocused=this" aria-label="${s.label}"></textarea>
+        `).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('scaffold-out').innerHTML=html;
+  lastFocused=null;
+}
+
+function renderWordBank(){
+  const container=document.getElementById('wb-words');
+  container.innerHTML=currentWords.map((w,i)=>
+    `<span class="wb-word" onclick="insertWord(this,'${w.replace(/'/g,"\\'")}')">  ${w}</span>`
+  ).join('');
+}
+
+function insertWord(el,word){
+  if(lastFocused){
+    const ta=lastFocused;
+    const start=ta.selectionStart,end=ta.selectionEnd;
+    const val=ta.value;
+    const insert=(start>0&&val[start-1]!==' '?' ':'')+word+' ';
+    ta.value=val.slice(0,start)+insert+val.slice(end);
+    ta.focus();
+    ta.selectionStart=ta.selectionEnd=start+insert.length;
+    el.style.background='#d4edda';
+    setTimeout(()=>el.style.background='',800);
+  } else {
+    try{navigator.clipboard.writeText(word);}catch(e){}
+    el.style.background='#e8f0fe';
+    setTimeout(()=>el.style.background='',800);
+  }
+}
+
+function addWord(){
+  const inp=document.getElementById('wb-input');
+  const w=inp.value.trim();
+  if(!w)return;
+  currentWords.push(w);
+  renderWordBank();
+  inp.value='';
+}
+
+function resetWords(){
+  const grade=document.getElementById('grade').value;
+  const ptype=document.getElementById('ptype').value;
+  currentWords=[...WORDBANKS[ptype][grade]];
+  renderWordBank();
+}
+
+function fillNearest(el,text){
+  const body=el.closest('.sbox-body');
+  const starters=el.closest('.starter-row');
+  let node=starters.nextElementSibling;
+  while(node){
+    if(node.tagName==='TEXTAREA'){
+      if(!node.value){node.value=text+' ';node.focus();node.selectionStart=node.selectionEnd=node.value.length;}
+      return;
+    }
+    node=node.nextElementSibling;
+  }
+}
+
+function clearAll(){
+  document.querySelectorAll('textarea').forEach(t=>t.value='');
+  renderWordBank();
+}
+
+function printScaffold(){
+  document.querySelectorAll('.print-starters').forEach(el=>el.style.display='block');
+  document.querySelectorAll('.print-hide').forEach(el=>el.style.display='none');
+  const name=document.getElementById('s-name')?.value||'';
+  const date=document.getElementById('s-date')?.value||'';
+  const cls=document.getElementById('s-class')?.value||'';
+  const infoRow=document.getElementById('student-info-print');
+  if(name||date||cls){
+    document.getElementById('p-name').textContent=name;
+    document.getElementById('p-date').textContent=date;
+    document.getElementById('p-class').textContent=cls;
+    infoRow.style.display='block';
+  }
+  window.print();
+  setTimeout(()=>{
+    document.querySelectorAll('.print-starters').forEach(el=>el.style.display='none');
+    document.querySelectorAll('.print-hide').forEach(el=>el.style.display='');
+    infoRow.style.display='none';
+    document.querySelectorAll('select').forEach(s=>{
+      const opt=s.options[s.selectedIndex];
+      if(opt)opt.selected=true;
+    });
+  },1000);
+}
+
+function exportDoc(){
+  const grade=document.getElementById('grade').value;
+  const ptype=document.getElementById('ptype').value;
+  const cfg=DATA[ptype][grade];
+  const name=document.getElementById('s-name')?.value||'';
+  const date=document.getElementById('s-date')?.value||'';
+  const cls=document.getElementById('s-class')?.value||'';
+  const textareas=document.querySelectorAll('textarea');
+  let taIdx=0;
+
+  let body=`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <style>
+    body{font-family:Arial,sans-serif;max-width:720px;margin:40px auto;color:#111;font-size:15px;line-height:1.6}
+    h1{font-size:20px;margin-bottom:4px}
+    .meta{font-size:13px;color:#666;margin-bottom:6px}
+    .info-bar{font-size:13px;margin-bottom:16px;padding:8px 12px;background:#f5f5f2;border-radius:6px}
+    .wb{background:#f5f5f2;padding:10px 14px;border-radius:6px;margin-bottom:20px;font-size:13px}
+    .wb strong{display:block;margin-bottom:6px}
+    .wb-word{display:inline-block;border:1px solid #ccc;border-radius:4px;padding:2px 8px;margin:2px;font-size:12px;background:#fff}
+    hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+    .box{margin-bottom:22px;border-left:4px solid #ccc;padding-left:16px;page-break-inside:avoid}
+    .box-name{font-weight:bold;font-size:15px;margin-bottom:2px}
+    .box-hint{font-size:12px;color:#666;margin-bottom:6px}
+    .box-starters{font-size:12px;color:#888;font-style:italic;margin-bottom:8px}
+    .write-area{min-height:50px;border-bottom:1px solid #aaa;padding:6px 4px;font-size:15px;color:#111;margin-bottom:2px}
+    .sub-label{font-size:12px;font-weight:bold;color:#555;margin:12px 0 4px}
+  </style></head><body>`;
+
+  body+=`<h1>${cfg.title}</h1>`;
+  body+=`<p class="meta">${cfg.grade}</p>`;
+
+  if(name||date||cls){
+    body+=`<div class="info-bar">`;
+    if(name) body+=`<strong>Name:</strong> ${name}&nbsp;&nbsp;&nbsp;`;
+    if(date) body+=`<strong>Date:</strong> ${date}&nbsp;&nbsp;&nbsp;`;
+    if(cls) body+=`<strong>Class / period:</strong> ${cls}`;
+    body+=`</div>`;
+  }
+
+  body+=`<div class="wb"><strong>Word bank</strong><div>${currentWords.map(w=>`<span class="wb-word">${w}</span>`).join('')}</div></div>`;
+  body+=`<hr>`;
+
+  cfg.boxes.forEach(b=>{
+    const val=(textareas[taIdx]?textareas[taIdx].value:'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    taIdx++;
+    body+=`<div class="box">`;
+    body+=`<div class="box-name">${b.num}. ${b.name}</div>`;
+    body+=`<div class="box-hint">${b.hint}</div>`;
+    body+=`<div class="box-starters">Sentence starters: ${b.starters.join(' / ')}</div>`;
+    body+=`<div class="write-area">${val||'&nbsp;'}</div>`;
+    (b.sub||[]).forEach(s=>{
+      const sv=(textareas[taIdx]?textareas[taIdx].value:'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+      taIdx++;
+      body+=`<div class="sub-label">${s.label}</div>`;
+      body+=`<div class="box-starters">Starters: ${s.starters.join(' / ')}</div>`;
+      body+=`<div class="write-area">${sv||'&nbsp;'}</div>`;
+    });
+    body+=`</div>`;
+  });
+
+  body+=`</body></html>`;
+
+  const blob=new Blob([body],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const ptypeLabel=document.getElementById('ptype').options[document.getElementById('ptype').selectedIndex].text.split('/')[0].trim().toLowerCase().replace(/\s+/g,'-');
+  a.download=`writing-scaffold-${ptypeLabel}-${grade}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+</body>
+</html>
