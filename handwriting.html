@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching Handwriting & Print</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #4A90D9;
+    --sun: #FFD93D;
+    --grass: #6BCB77;
+    --coral: #FF6B6B;
+    --purple: #845EC2;
+    --navy: #1A2E4A;
+    --cream: #FFFBF0;
+    --teal: #4ECDC4;
+    --peach: #FFB347;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+  }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; padding: 10px 20px; flex-wrap: wrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  nav a {
+    color: #fff; text-decoration: none; font-weight: 700;
+    font-size: 0.9rem; padding: 7px 16px; border-radius: 50px;
+    transition: background 0.2s, color 0.2s; white-space: nowrap;
+  }
+  nav a:hover { background: var(--sun); color: var(--navy); }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #e8f4ff 0%, #f0fff4 50%, #fff9e6 100%);
+    padding: 48px 24px 36px;
+    text-align: center;
+    border-bottom: 3px solid rgba(74,144,217,0.15);
+  }
+  .hero-badge {
+    display: inline-block; background: var(--sun); color: var(--navy);
+    font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 6px 18px; border-radius: 50px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--navy); margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--sky); }
+  .hero p { font-size: 1rem; color: #5a7a96; font-weight: 600; max-width: 580px; margin: 0 auto 24px; }
+
+  /* GRADE TABS */
+  .tabs-wrap { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 0; }
+  .tab-btn {
+    padding: 12px 28px; border-radius: 50px; font-size: 1rem; font-weight: 800;
+    border: 2.5px solid transparent; cursor: pointer; transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .tab-btn.elem  { background: #e8f4ff; color: var(--sky); border-color: var(--sky); }
+  .tab-btn.mid   { background: #eafaf1; color: #2e9e5b; border-color: #2e9e5b; }
+  .tab-btn.high  { background: #f3eeff; color: var(--purple); border-color: var(--purple); }
+  .tab-btn.active.elem  { background: var(--sky); color: #fff; }
+  .tab-btn.active.mid   { background: #2e9e5b; color: #fff; }
+  .tab-btn.active.high  { background: var(--purple); color: #fff; }
+
+  /* SECTION CONTENT */
+  .grade-section { display: none; padding: 36px 24px 60px; max-width: 900px; margin: 0 auto; }
+  .grade-section.active { display: block; }
+
+  .section-label {
+    display: inline-block; font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px;
+    border-radius: 50px; margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--navy); margin-bottom: 8px;
+  }
+  .section-sub { font-size: 0.95rem; color: #5a7a96; font-weight: 600; margin-bottom: 28px; }
+
+  /* PRINT BUTTON */
+  .print-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 24px; border-radius: 50px; font-size: 0.95rem;
+    font-weight: 800; border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 32px;
+    text-decoration: none;
+  }
+  .print-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+  .print-btn.elem  { background: var(--sky); color: #fff; }
+  .print-btn.mid   { background: #2e9e5b; color: #fff; }
+  .print-btn.high  { background: var(--purple); color: #fff; }
+
+  /* ALPHABET GRID */
+  .alpha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .letter-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    border: 1.5px solid #eee;
+  }
+
+  .letter-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .elem .letter-display { color: var(--sky); }
+  .mid  .letter-display { color: #2e9e5b; }
+  .high .letter-display { color: var(--purple); }
+
+  .letter-small {
+    font-size: 1.1rem;
+    color: #888;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  /* TRACE LINES */
+  .trace-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .trace-line {
+    position: relative;
+    height: 32px;
+    border-bottom: 2px solid #ccc;
+  }
+  .trace-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    border-top: 1px dashed #ddd;
+  }
+  .trace-text {
+    position: absolute;
+    top: 0; left: 0;
+    font-size: 1.4rem;
+    line-height: 32px;
+    color: rgba(180,200,220,0.6);
+    font-family: 'Fredoka One', cursive;
+    letter-spacing: 6px;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* WORDS SECTION */
+  .words-section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    margin-bottom: 32px;
+  }
+  .words-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+  .elem .words-title { color: var(--sky); }
+  .mid  .words-title { color: #2e9e5b; }
+  .high .words-title { color: var(--purple); }
+
+  .words-sub { font-size: 0.85rem; color: #888; font-weight: 600; margin-bottom: 20px; }
+
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .word-item { }
+  .word-label {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .word-trace {
+    position: relative;
+    height: 36px;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 4px;
+  }
+  .word-trace::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    border-top: 1px dashed #ddd;
+  }
+  .word-trace-text {
+    position: absolute;
+    top: 2px; left: 0;
+    font-size: 1.3rem;
+    line-height: 34px;
+    color: rgba(180,200,220,0.55);
+    font-family: 'Fredoka One', cursive;
+    letter-spacing: 3px;
+  }
+  .word-blank {
+    height: 36px;
+    border-bottom: 2px solid #ccc;
+    position: relative;
+  }
+  .word-blank::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    border-top: 1px dashed #ddd;
+  }
+
+  /* SENTENCES SECTION (middle/high) */
+  .sentence-section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    margin-bottom: 32px;
+  }
+  .sentence-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+  .mid  .sentence-title { color: #2e9e5b; }
+  .high .sentence-title { color: var(--purple); }
+  .sentence-sub { font-size: 0.85rem; color: #888; font-weight: 600; margin-bottom: 20px; }
+
+  .sentence-item { margin-bottom: 20px; }
+  .sentence-text {
+    font-size: 0.9rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .sentence-lines { display: flex; flex-direction: column; gap: 6px; }
+  .sentence-line {
+    height: 36px;
+    border-bottom: 2px solid #ccc;
+    position: relative;
+  }
+  .sentence-line::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    border-top: 1px dashed #ddd;
+  }
+  .sentence-line.has-text .sentence-line-text {
+    position: absolute;
+    top: 2px; left: 0;
+    font-size: 1rem;
+    line-height: 34px;
+    color: rgba(180,200,220,0.55);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy); color: #fff;
+    text-align: center; padding: 28px 24px;
+    font-size: 0.88rem; font-weight: 600;
+  }
+  footer a { color: var(--sun); text-decoration: none; }
+
+  /* PRINT STYLES */
+  @media print {
+    nav, .hero, .tabs-wrap, .print-btn, footer { display: none !important; }
+    body { background: #fff; }
+    .grade-section { display: block !important; padding: 0; max-width: 100%; }
+    .grade-section:not(.active) { display: none !important; }
+    .section-label, .section-sub { display: none; }
+    .letter-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+    .words-section, .sentence-section { box-shadow: none; border: 1px solid #eee; break-inside: avoid; }
+    .alpha-grid { grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .word-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🏠 Home</a>
+  <a href="index.html#scaffold">✏️ Writing Scaffold</a>
+  <a href="index.html#literacy">📚 Literacy</a>
+  <a href="index.html#comprehension">🧠 Comprehension</a>
+  <a href="index.html#tips">💡 Tips</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">✏️ Handwriting Practice</div>
+  <h1>Teaching <span>Handwriting</span> & Print</h1>
+  <p>Printable alphabet tracing sheets and word practice for every grade level. Select your grade, then click Print!</p>
+  <div class="tabs-wrap">
+    <button class="tab-btn elem active" onclick="showGrade('elem')">📘 Elementary (K–5)</button>
+    <button class="tab-btn mid"  onclick="showGrade('mid')">📗 Middle School (6–8)</button>
+    <button class="tab-btn high" onclick="showGrade('high')">📙 High School (9–12)</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ELEMENTARY
+════════════════════════════════════════════ -->
+<div id="grade-elem" class="grade-section elem active">
+  <span class="section-label" style="background:#e8f4ff;color:var(--sky)">📘 Elementary · K–5</span>
+  <h2 class="section-title">Alphabet Tracing — A to Z</h2>
+  <p class="section-sub">Trace each uppercase and lowercase letter, then practice writing on your own!</p>
+  <button class="print-btn elem" onclick="window.print()">🖨️ Print This Sheet</button>
+
+  <div class="alpha-grid" id="elem-alpha"></div>
+
+  <!-- WORDS -->
+  <div class="words-section">
+    <div class="words-title">✏️ Sight Words & Simple Words to Trace</div>
+    <div class="words-sub">Trace the word, then write it yourself on the blank line.</div>
+    <div class="word-grid" id="elem-words"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MIDDLE SCHOOL
+════════════════════════════════════════════ -->
+<div id="grade-mid" class="grade-section mid">
+  <span class="section-label" style="background:#eafaf1;color:#2e9e5b">📗 Middle School · 6–8</span>
+  <h2 class="section-title">Print Practice — A to Z</h2>
+  <p class="section-sub">Practice neat, consistent print lettering. Trace, then write each letter independently.</p>
+  <button class="print-btn mid" onclick="window.print()">🖨️ Print This Sheet</button>
+
+  <div class="alpha-grid" id="mid-alpha"></div>
+
+  <!-- WORDS -->
+  <div class="words-section">
+    <div class="words-title">✏️ Vocabulary Words to Trace</div>
+    <div class="words-sub">Trace the word, then write it yourself. Focus on even spacing and neat letters.</div>
+    <div class="word-grid" id="mid-words"></div>
+  </div>
+
+  <!-- SENTENCES -->
+  <div class="sentence-section">
+    <div class="sentence-title">📝 Sentences to Copy</div>
+    <div class="sentence-sub">Trace the sentence, then copy it neatly on the lines below.</div>
+    <div id="mid-sentences"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HIGH SCHOOL
+════════════════════════════════════════════ -->
+<div id="grade-high" class="grade-section high">
+  <span class="section-label" style="background:#f3eeff;color:var(--purple)">📙 High School · 9–12</span>
+  <h2 class="section-title">Print Fluency — A to Z</h2>
+  <p class="section-sub">Develop consistent, legible print handwriting. Practice every letter and advanced vocabulary.</p>
+  <button class="print-btn high" onclick="window.print()">🖨️ Print This Sheet</button>
+
+  <div class="alpha-grid" id="high-alpha"></div>
+
+  <!-- WORDS -->
+  <div class="words-section">
+    <div class="words-title">✏️ Academic Vocabulary to Trace</div>
+    <div class="words-sub">Trace the word carefully, then write it twice on the practice lines.</div>
+    <div class="word-grid" id="high-words"></div>
+  </div>
+
+  <!-- SENTENCES -->
+  <div class="sentence-section">
+    <div class="sentence-title">📝 Academic Sentences to Copy</div>
+    <div class="sentence-sub">Copy each sentence in neat, consistent print. Focus on letter size and spacing.</div>
+    <div id="high-sentences"></div>
+  </div>
+</div>
+
+<footer>
+  <p style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:6px;">📚 Literacy & Comprehension Hub</p>
+  <p style="opacity:0.8;margin-bottom:8px;">Teaching Handwriting & Print — Printable Templates</p>
+  <p style="opacity:0.7;font-size:0.82rem;">Created by Naneka Jones · A 20+ year lifelong educator and administrator</p>
+  <p style="margin-top:10px;opacity:0.85;font-size:0.85rem;">Questions, Comments & Suggestions? <a href="mailto:lifelong08learner@gmail.com">lifelong08learner@gmail.com</a></p>
+</footer>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+
+const ELEM_WORDS = [
+  'cat','dog','the','and','run','big','can','see','red','fun',
+  'hop','sit','mom','dad','sun','hat','cup','pen','map','lip',
+  'box','yes','get','put','let','bed','bus','mud','fox','jam'
+];
+
+const MID_WORDS = [
+  'author','because','between','chapter','compare','contrast',
+  'describe','develop','discuss','during','effect','example',
+  'explain','finally','however','include','inform','instead',
+  'mention','message','method','observe','opinion','organize',
+  'present','process','provide','purpose','require','respond'
+];
+
+const HIGH_WORDS = [
+  'analysis','argument','conclusion','context','critique',
+  'demonstrate','evidence','evaluate','hypothesis','inference',
+  'interpret','justify','narrative','perspective','phenomenon',
+  'significant','structure','summarize','synthesis','transition',
+  'advocate','contribute','elaborate','fundamental','investigate',
+  'misconception','paraphrase','preliminary','substantial','vocabulary'
+];
+
+const MID_SENTENCES = [
+  'The author uses evidence to support the main idea.',
+  'Compare and contrast the two characters in the story.',
+  'Describe the cause and effect of the event.',
+  'The purpose of the paragraph is to inform the reader.',
+  'However, the outcome of the story was unexpected.',
+];
+
+const HIGH_SENTENCES = [
+  'The author\'s argument is supported by compelling evidence.',
+  'Analyze the significance of this event in historical context.',
+  'Evaluate the strengths and weaknesses of this perspective.',
+  'Synthesize information from multiple sources to draw a conclusion.',
+  'The fundamental purpose of this text is to persuade the reader.',
+];
+
+// ─── BUILD ALPHABET ──────────────────────────────────────
+
+function buildAlpha(containerId, rows) {
+  const container = document.getElementById(containerId);
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  letters.forEach(L => {
+    const card = document.createElement('div');
+    card.className = 'letter-card';
+
+    let traceHtml = '';
+    for (let i = 0; i < rows; i++) {
+      const ghost = i === 0 ? `<span class="trace-text">${L + L.toLowerCase() + ' '}</span>` : '';
+      traceHtml += `<div class="trace-line">${ghost}</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="letter-display">${L}</div>
+      <div class="letter-small">${L.toLowerCase()}</div>
+      <div class="trace-lines">${traceHtml}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ─── BUILD WORDS ─────────────────────────────────────────
+
+function buildWords(containerId, words, showPractice) {
+  const container = document.getElementById(containerId);
+  words.forEach(word => {
+    const item = document.createElement('div');
+    item.className = 'word-item';
+
+    const blankLine = showPractice
+      ? `<div class="word-blank"></div><div class="word-blank"></div>`
+      : `<div class="word-blank"></div>`;
+
+    item.innerHTML = `
+      <div class="word-label">${word}</div>
+      <div class="word-trace">
+        <span class="word-trace-text">${word}</span>
+      </div>
+      ${blankLine}
+    `;
+    container.appendChild(item);
+  });
+}
+
+// ─── BUILD SENTENCES ─────────────────────────────────────
+
+function buildSentences(containerId, sentences) {
+  const container = document.getElementById(containerId);
+  sentences.forEach(s => {
+    const item = document.createElement('div');
+    item.className = 'sentence-item';
+    item.innerHTML = `
+      <div class="sentence-text">➤ ${s}</div>
+      <div class="sentence-lines">
+        <div class="sentence-line has-text"><span class="sentence-line-text">${s}</span></div>
+        <div class="sentence-line"></div>
+        <div class="sentence-line"></div>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+// ─── GRADE TABS ──────────────────────────────────────────
+
+function showGrade(grade) {
+  document.querySelectorAll('.grade-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('grade-' + grade).classList.add('active');
+  document.querySelector('.tab-btn.' + grade).classList.add('active');
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+
+buildAlpha('elem-alpha', 2);
+buildAlpha('mid-alpha',  2);
+buildAlpha('high-alpha', 2);
+
+buildWords('elem-words', ELEM_WORDS, false);
+buildWords('mid-words',  MID_WORDS,  false);
+buildWords('high-words', HIGH_WORDS, true);
+
+buildSentences('mid-sentences',  MID_SENTENCES);
+buildSentences('high-sentences', HIGH_SENTENCES);
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 50);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
