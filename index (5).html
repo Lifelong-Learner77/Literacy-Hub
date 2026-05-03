@@ -289,7 +289,7 @@
     });
   });
 
-  fetch('https://api.counterapi.dev/v1/lifelong-learner77/literacy-hub/hit')
+  fetch('https://hits.dwyl.com/lifelong-learner77/literacy-hub.json')
     .then(r => r.json())
     .then(d => { document.getElementById('visit-count').textContent = Number(d.count).toLocaleString(); })
     .catch(() => { document.getElementById('visit-count').textContent = '—'; });
