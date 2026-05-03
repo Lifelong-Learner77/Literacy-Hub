@@ -293,7 +293,7 @@
   <p style="opacity:0.7;font-size:0.85rem;margin-top:4px;">A 20+ year lifelong educator and administrator</p>
   <p style="margin-top:12px;opacity:0.85;font-size:0.88rem;">Questions, Comments &amp; Suggestions? Please email: <a href="mailto:lifelong08learner@gmail.com" style="color:var(--sun);font-weight:700;">lifelong08learner@gmail.com</a></p>
   <p style="margin-top:12px;">
-    <img src="https://hits.sh/lifelong-learner77.github.io/literacy-hub.svg?label=Site+Visits&color=4A90D9&labelColor=1A2E4A" alt="Site Visits" style="height:22px;border-radius:4px;"/>
+   🕐 Site visits: <span id="visit-count" style="color:#FFD93D;font-weight:800;">...</span>
   </p>
   <p style="opacity:0.6;font-size:0.82rem;margin-top:12px;">
     <a href="#scaffold">Writing Scaffold</a> &nbsp;·&nbsp;
@@ -322,8 +322,19 @@
       e.preventDefault();
       const target = document.querySelector(a.getAttribute('href'));
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
   });
+  });
+
+  fetch('https://api.counterapi.dev/v1/lifelong-learner77/literacy-hub/hit')
+    .then(res => res.json())
+    .then(data => {
+      const el = document.getElementById('visit-count');
+      if (el) el.textContent = Number(data.count).toLocaleString();
+    })
+    .catch(() => {
+      const el = document.getElementById('visit-count');
+      if (el) el.textContent = '—';
+    });
 </script>
 </body>
 </html>
