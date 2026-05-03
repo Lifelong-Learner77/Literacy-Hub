@@ -806,14 +806,14 @@
 </p>
 
 <script>
-  fetch('https://api.countapi.xyz/hit/lifelong-learner77-literacy-hub/visits')
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('visit-count').textContent = data.value.toLocaleString();
-    })
-    .catch(() => {
-      document.getElementById('visit-count').textContent = '—';
-    });
+  fetch('https://hits.sh/lifelong-learner77.github.io/literacy-hub.json')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('visit-count').textContent = Number(data.count).toLocaleString();
+  })
+  .catch(() => {
+    document.getElementById('visit-count').textContent = '—';
+  });
 </script>
   <p style="margin-top:14px;opacity:0.9;font-size:0.95rem;font-weight:700;">Created by Naneka Jones</p>
 <p style="opacity:0.7;font-size:0.85rem;margin-top:4px;">A 20+ year lifelong educator and administrator</p>
