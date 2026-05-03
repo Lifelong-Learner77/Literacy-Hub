@@ -801,19 +801,7 @@
 <footer>
   <p style="font-family:'Fredoka One',cursive;font-size:1.4rem;margin-bottom:8px;">📚 Literacy &amp; Comprehension Hub</p>
   <p style="margin-bottom:6px;opacity:0.8;">All resources linked on this page are free to access. Happy reading and writing!</p>
- <p style="margin-top:14px;opacity:0.85;font-size:0.9rem;font-weight:600;">
-  🕐 Site visits: <span id="visit-count" style="color:#FFD93D;font-weight:800;">...</span>
-</p>
-
-<script>
-  fetch('https://hits.sh/lifelong-learner77.github.io/literacy-hub.json')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('visit-count').textContent = Number(data.count).toLocaleString();
-  })
-  .catch(() => {
-    document.getElementById('visit-count').textContent = '—';
-  });
+<img src="https://hits.sh/lifelong-learner77.github.io/literacy-hub.svg?label=Site+Visits&color=4A90D9&labelColor=1A2E4A" alt="Site Visits" style="height:22px;border-radius:4px;margin-top:14px;"/>
 </script>
   <p style="margin-top:14px;opacity:0.9;font-size:0.95rem;font-weight:700;">Created by Naneka Jones</p>
 <p style="opacity:0.7;font-size:0.85rem;margin-top:4px;">A 20+ year lifelong educator and administrator</p>
