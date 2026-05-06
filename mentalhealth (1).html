@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Health & Wellness Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WY4Z422DEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-WY4Z422DEX');</script>
+<style>
+:root{--sky:#4A90D9;--sun:#FFD93D;--grass:#6BCB77;--coral:#FF6B6B;--purple:#845EC2;--cream:#FFFBF0;--navy:#1A2E4A;--peach:#FFB347;--teal:#4ECDC4;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);}
+nav{background:var(--navy);display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,.25);}
+nav a{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem;padding:7px 16px;border-radius:50px;transition:background .2s,color .2s;white-space:nowrap;}
+nav a:hover{background:var(--sun);color:var(--navy);}
+.hero{background:linear-gradient(135deg,#e8f8f0 0%,#f0f4ff 50%,#fff9e6 100%);padding:48px 24px 36px;text-align:center;border-bottom:3px solid rgba(107,203,119,.2);}
+.hero-badge{display:inline-block;background:var(--grass);color:#fff;font-size:.8rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:6px 18px;border-radius:50px;margin-bottom:14px;}
+.hero h1{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3.2rem);color:var(--navy);margin-bottom:10px;}
+.hero h1 span{color:#1D9E75;}
+.hero p{font-size:1rem;color:#5a7a96;font-weight:600;max-width:600px;margin:0 auto 28px;line-height:1.6;}
+.tabs-outer{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.tab-btn{padding:11px 22px;border-radius:50px;font-size:.9rem;font-weight:800;border:2px solid transparent;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+.tab-btn.t-search{background:#e1f5ee;color:#085041;border-color:#1D9E75;}
+.tab-btn.t-dots{background:#e6f1fb;color:#042C53;border-color:#4A90D9;}
+.tab-btn.t-awords{background:#f3eeff;color:#26215C;border-color:#845EC2;}
+.tab-btn.t-aphrases{background:#fff4e6;color:#7A4800;border-color:#FFB347;}
+.tab-btn.t-tips{background:#fff0f0;color:#7A1A1A;border-color:#FF6B6B;}
+.tab-btn.active.t-search{background:#1D9E75;color:#fff;}
+.tab-btn.active.t-dots{background:#4A90D9;color:#fff;}
+.tab-btn.active.t-awords{background:#845EC2;color:#fff;}
+.tab-btn.active.t-aphrases{background:#FFB347;color:#fff;}
+.tab-btn.active.t-tips{background:#FF6B6B;color:#fff;}
+.grade-bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:16px 24px 0;background:#fff;border-bottom:1px solid #eee;}
+.grade-btn{padding:6px 18px;border-radius:50px;font-size:.85rem;font-weight:700;border:1.5px solid #ddd;background:#f5f5f5;color:#555;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+.grade-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.content-area{max-width:960px;margin:0 auto;padding:36px 24px 60px;}
+.section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--navy);margin-bottom:8px;}
+.section-desc{font-size:.95rem;color:#5a7a96;font-weight:600;margin-bottom:24px;line-height:1.6;}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:50px;font-size:.9rem;font-weight:800;border:none;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform .2s,box-shadow .2s;margin-bottom:28px;background:var(--navy);color:#fff;box-shadow:0 4px 14px rgba(26,46,74,.3);}
+.print-btn:hover{transform:translateY(-2px);}
+.ws-grid{display:grid;grid-template-columns:repeat(15,32px);gap:2px;margin-bottom:16px;overflow-x:auto;}
+.ws-cell{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:1px solid #e0e0e0;border-radius:5px;background:#fff;color:var(--navy);cursor:pointer;user-select:none;}
+.ws-cell.found{background:#e1f5ee;color:#085041;border-color:#5DCAA5;}
+.ws-cell.selected{background:#e6f1fb;color:#042C53;border-color:#85B7EB;}
+.word-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.word-badge{padding:5px 14px;border-radius:50px;font-size:.8rem;font-weight:700;border:1px solid #ddd;background:#f5f5f5;color:#555;}
+.word-badge.found{background:#e1f5ee;color:#085041;border-color:#5DCAA5;text-decoration:line-through;}
+.dots-wrap svg{width:100%;max-width:420px;height:auto;border:1px solid #eee;border-radius:16px;background:#fff;padding:16px;}
+.aff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.aff-word-card{background:#fff;border-radius:16px;padding:20px 22px;box-shadow:0 3px 14px rgba(0,0,0,.06);border-left:4px solid var(--purple);}
+.aff-word-title{font-family:'Fredoka One',cursive;font-size:1.4rem;margin-bottom:6px;}
+.aff-word-def{font-size:.9rem;font-weight:600;line-height:1.6;}
+.phrase-list{display:flex;flex-direction:column;gap:14px;}
+.phrase-card{background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 3px 14px rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start;}
+.phrase-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;}
+.phrase-text{font-size:1rem;color:var(--navy);font-weight:700;line-height:1.65;font-style:italic;}
+.tips-list{display:flex;flex-direction:column;gap:14px;}
+.tip-card{background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 3px 14px rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start;}
+.tip-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.tip-title{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);margin-bottom:4px;}
+.tip-text{font-size:.9rem;font-weight:600;line-height:1.6;}
+.print-note{background:#f0fff4;border:1px solid #b7e8c8;border-radius:10px;padding:10px 16px;font-size:.82rem;color:#0F6E56;font-weight:600;margin-top:20px;}
+footer{background:var(--navy);color:#fff;text-align:center;padding:32px 24px;font-size:.88rem;font-weight:600;}
+footer a{color:var(--sun);text-decoration:none;}
+@media print{nav,footer,.tab-btn,.grade-btn,.print-btn{display:none!important;}body{background:#fff;}.ws-cell{border:1px solid #ccc;}.aff-word-card,.phrase-card,.tip-card{box-shadow:none;border:1px solid #eee;break-inside:avoid;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">🏠 Home</a>
+  <a href="scaffold.html">✏️ Writing Scaffold</a>
+  <a href="handwriting.html">✍️ Handwriting</a>
+  <a href="index.html#literacy">📚 Literacy</a>
+  <a href="index.html#tips">💡 Tips</a>
+</nav>
+<div class="hero">
+  <div class="hero-badge">💚 Mental Health & Wellness</div>
+  <h1>Mental Health <span>Templates</span></h1>
+  <p>Word searches, connect the dots, affirmation words and phrases, and helpful wellness tips — for every age group. Select your grade level and activity, then print!</p>
+  <div class="tabs-outer">
+    <button class="tab-btn t-search active" onclick="showTab('search')">🔍 Word Search</button>
+    <button class="tab-btn t-dots" onclick="showTab('dots')">🔵 Connect the Dots</button>
+    <button class="tab-btn t-awords" onclick="showTab('awords')">💜 Affirmation Words</button>
+    <button class="tab-btn t-aphrases" onclick="showTab('aphrases')">🌟 Affirmation Phrases</button>
+    <button class="tab-btn t-tips" onclick="showTab('tips')">💡 Helpful Tips</button>
+  </div>
+</div>
+<div class="grade-bar">
+  <button class="grade-btn active" onclick="setGrade('elem')">📘 Elementary (K–5)</button>
+  <button class="grade-btn" onclick="setGrade('mid')">📗 Middle School (6–8)</button>
+  <button class="grade-btn" onclick="setGrade('high')">📙 High School (9–12)</button>
+  <button class="grade-btn" onclick="setGrade('adult')">📓 Adult</button>
+</div>
+<div class="content-area" id="content-area"></div>
+<footer>
+  <p style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:6px;">📚 Literacy & Comprehension Hub</p>
+  <p style="opacity:.8;margin-bottom:8px;">Mental Health & Wellness Templates</p>
+  <p style="opacity:.7;font-size:.82rem;">Created by Naneka Jones · A 20+ year lifelong educator and administrator</p>
+  <p style="margin-top:10px;opacity:.85;font-size:.85rem;">Questions? <a href="mailto:lifelong08learner@gmail.com">lifelong08learner@gmail.com</a></p>
+</footer>
+<script>
+let currentTab='search',currentGrade='elem',wsData=null,foundWords=new Set(),selStart=null,selCells=[];
+const DATA={
+search:{
+elem:{title:'Finding calm',desc:'Find the hidden mental health words. Words go across or down. Click and drag to select!',words:['CALM','BRAVE','KIND','SAFE','HAPPY','SMILE','CARE','HOPE','LOVE','REST','PLAY','FRIEND','JOY','PEACE','HELP']},
+mid:{title:'Emotional wellness',desc:'Find the hidden words related to emotional wellness. Words go across or down.',words:['COURAGE','MINDFUL','BALANCE','SUPPORT','BREATHE','REFLECT','JOURNAL','EMPATHY','KINDNESS','GRATITUDE','HOPEFUL','WORTHY','SAFE','GROW']},
+high:{title:'Mental health awareness',desc:'Find the hidden mental health words in the grid. Words go across or down.',words:['RESILIENCE','BOUNDARIES','COMPASSION','PERSPECTIVE','AWARENESS','WELLBEING','ADVOCACY','SELFCARE','BELONGING','MINDFULNESS','ACCEPTANCE']},
+adult:{title:'Wellness & mindfulness',desc:'Take a mindful moment to find each hidden word in the grid.',words:['RESILIENCE','MINDFULNESS','COMPASSION','BOUNDARIES','REFLECTION','GRATITUDE','ACCEPTANCE','PERSPECTIVE','BELONGING','ADVOCACY','HEALING','GROWTH']}
+},
+dots:{
+elem:{title:'Connect the dots — Happy sun',desc:'Connect each dot in number order to reveal a cheerful sunny shape!',points:[[190,30],[215,70],[255,55],[240,95],[275,120],[235,125],[225,165],[190,140],[155,165],[145,125],[105,120],[140,95],[125,55],[165,70],[190,30]]},
+mid:{title:'Connect the dots — Peace symbol',desc:'Connect the dots to reveal a symbol of peace and calm.',points:[[190,25],[220,55],[235,95],[230,140],[210,175],[190,190],[170,175],[150,140],[145,95],[160,55],[190,25],[190,110],[160,140],[190,190],[220,140],[190,110]]},
+high:{title:'Connect the dots — Infinity loop',desc:'Connect the dots to reveal the infinity symbol — a reminder that healing has no limits.',points:[[80,110],[95,75],[125,60],[160,70],[185,100],[190,115],[195,100],[220,70],[255,60],[285,75],[300,110],[285,145],[255,160],[220,150],[195,130],[190,115],[185,130],[160,150],[125,160],[95,145],[80,110]]},
+adult:{title:'Connect the dots — Lotus flower',desc:'Connect the dots to reveal a lotus — a symbol of growth, resilience, and renewal.',points:[[190,220],[165,190],[140,160],[150,120],[175,100],[190,115],[205,100],[230,120],[240,160],[215,190],[190,220],[190,160],[175,130],[190,110],[205,130],[190,160]]}
+},
+awords:{
+elem:[{word:'Brave',color:'#e1f5ee',tc:'#085041',bc:'#1D9E75',def:'You have the courage to try new things, even when they feel scary or hard.'},{word:'Kind',color:'#e6f1fb',tc:'#042C53',bc:'#4A90D9',def:'You show care and love to others and to yourself every single day.'},{word:'Smart',color:'#f3eeff',tc:'#26215C',bc:'#845EC2',def:'You learn and grow a little more every single day.'},{word:'Loved',color:'#fff4e6',tc:'#7A4800',bc:'#FFB347',def:'You are surrounded by people who care deeply about you.'},{word:'Strong',color:'#fff0f0',tc:'#7A1A1A',bc:'#FF6B6B',def:'You can handle hard things — and you do not have to face them alone.'},{word:'Enough',color:'#eafaf1',tc:'#0b4619',bc:'#6BCB77',def:'You are exactly enough, just the way you are right now.'},{word:'Worthy',color:'#fef9e7',tc:'#7D6608',bc:'#FFD93D',def:'You deserve kindness, safety, and happiness — always.'},{word:'Hopeful',color:'#e8f8f5',tc:'#0E6655',bc:'#4ECDC4',def:'Good things are coming. You have so much to look forward to!'}],
+mid:[{word:'Resilient',color:'#e1f5ee',tc:'#085041',bc:'#1D9E75',def:'You bounce back from hard times stronger and wiser than before.'},{word:'Capable',color:'#e6f1fb',tc:'#042C53',bc:'#4A90D9',def:'You have the skills and strength to handle the challenges you face.'},{word:'Valued',color:'#f3eeff',tc:'#26215C',bc:'#845EC2',def:'Your thoughts, feelings, and ideas matter deeply to the people around you.'},{word:'Mindful',color:'#fff4e6',tc:'#7A4800',bc:'#FFB347',def:'You pay attention to your feelings and take care of your mind and heart.'},{word:'Authentic',color:'#fff0f0',tc:'#7A1A1A',bc:'#FF6B6B',def:'Being yourself — truly, fully yourself — is your greatest strength.'},{word:'Courageous',color:'#eafaf1',tc:'#0b4619',bc:'#6BCB77',def:'It takes real bravery to be honest about your feelings and ask for support.'},{word:'Growing',color:'#fef9e7',tc:'#7D6608',bc:'#FFD93D',def:'Every experience — even the hard ones — is helping you grow.'},{word:'Enough',color:'#e8f8f5',tc:'#0E6655',bc:'#4ECDC4',def:'You do not have to be perfect to be worthy of love, care, and respect.'}],
+high:[{word:'Resilient',color:'#e1f5ee',tc:'#085041',bc:'#1D9E75',def:'Adversity does not define you — your response to it does.'},{word:'Empowered',color:'#e6f1fb',tc:'#042C53',bc:'#4A90D9',def:'You have the agency and strength to shape your own path forward.'},{word:'Worthy',color:'#f3eeff',tc:'#26215C',bc:'#845EC2',def:'Your value is not determined by your productivity or achievements.'},{word:'Authentic',color:'#fff4e6',tc:'#7A4800',bc:'#FFB347',def:'Living honestly and openly is one of the greatest gifts you can give yourself.'},{word:'Compassionate',color:'#fff0f0',tc:'#7A1A1A',bc:'#FF6B6B',def:'Showing compassion to yourself is just as important as showing it to others.'},{word:'Capable',color:'#eafaf1',tc:'#0b4619',bc:'#6BCB77',def:'You have overcome every hard thing that has come before this moment.'},{word:'Enough',color:'#fef9e7',tc:'#7D6608',bc:'#FFD93D',def:'You are enough right now — not after you achieve the next goal.'},{word:'Connected',color:'#e8f8f5',tc:'#0E6655',bc:'#4ECDC4',def:'You belong here, and your presence genuinely matters to the people around you.'}],
+adult:[{word:'Resilient',color:'#e1f5ee',tc:'#085041',bc:'#1D9E75',def:'You have survived every difficult day so far — that kind of strength is real.'},{word:'Worthy',color:'#e6f1fb',tc:'#042C53',bc:'#4A90D9',def:'Your worth is inherent. It is not earned, lost, or dependent on what you produce.'},{word:'Compassionate',color:'#f3eeff',tc:'#26215C',bc:'#845EC2',def:'Extending genuine compassion to yourself is not weakness — it is wisdom.'},{word:'Grounded',color:'#fff4e6',tc:'#7A4800',bc:'#FFB347',def:'You can find stillness and clarity even in the most uncertain times.'},{word:'Enough',color:'#fff0f0',tc:'#7A1A1A',bc:'#FF6B6B',def:'You are already enough — exactly as you are, right here, right now.'},{word:'Healing',color:'#eafaf1',tc:'#0b4619',bc:'#6BCB77',def:'Growth and healing are not linear — every single step you take counts.'},{word:'Connected',color:'#fef9e7',tc:'#7D6608',bc:'#FFD93D',def:'Reaching out to others is a sign of strength, not weakness.'},{word:'Capable',color:'#e8f8f5',tc:'#0E6655',bc:'#4ECDC4',def:'You have the inner resources to navigate whatever comes next.'}]
+},
+aphrases:{
+elem:{colors:['#e1f5ee','#e6f1fb','#f3eeff','#fff4e6','#fff0f0','#eafaf1','#fef9e7','#e8f8f5'],ncolors:['#1D9E75','#4A90D9','#845EC2','#FFB347','#FF6B6B','#6BCB77','#FFD93D','#4ECDC4'],phrases:['I am loved and I belong here.','My feelings are important and it is okay to talk about them.','I am brave enough to ask for help when I need it.','Mistakes help me learn — I keep going even when things are hard.','I treat myself and others with kindness every single day.','I am proud of how hard I try — that matters so much.','Good things are coming — I have hope for tomorrow.','I matter, and my voice and ideas matter too.']},
+mid:{colors:['#e1f5ee','#e6f1fb','#f3eeff','#fff4e6','#fff0f0','#eafaf1','#fef9e7','#e8f8f5'],ncolors:['#1D9E75','#4A90D9','#845EC2','#FFB347','#FF6B6B','#6BCB77','#FFD93D','#4ECDC4'],phrases:['I am allowed to feel my emotions without judging myself for them.','My mental health matters just as much as my physical health.','I do not need to have everything figured out — I am still learning and growing.','I set boundaries because I value and respect myself.','Asking for help is one of the bravest things I can do.','I am more than my grades, my mistakes, or what others think of me.','I choose to focus on what I can control today.','I am worthy of care, rest, and kindness — especially from myself.']},
+high:{colors:['#e1f5ee','#e6f1fb','#f3eeff','#fff4e6','#fff0f0','#eafaf1','#fef9e7','#e8f8f5'],ncolors:['#1D9E75','#4A90D9','#845EC2','#FFB347','#FF6B6B','#6BCB77','#FFD93D','#4ECDC4'],phrases:['I am allowed to prioritize my mental health without guilt or apology.','My value is not measured by what I produce or achieve.','I release comparisons — my journey is my own and that is enough.','I am resilient. I have faced hard things and I have found my way through.','I give myself permission to rest — it does not need to be earned.','Vulnerability is a form of courage, not a weakness.','I will speak to myself with the same kindness I would offer a close friend.','Progress — not perfection — is what matters most.']},
+adult:{colors:['#e1f5ee','#e6f1fb','#f3eeff','#fff4e6','#fff0f0','#eafaf1','#fef9e7','#e8f8f5'],ncolors:['#1D9E75','#4A90D9','#845EC2','#FFB347','#FF6B6B','#6BCB77','#FFD93D','#4ECDC4'],phrases:['I give myself permission to feel without needing to fix or explain it.','Healing is not a destination — it is a daily, ongoing practice.','I release the need to be everything to everyone.','My boundaries are an act of self-respect, self-love, and integrity.','I am doing the best I can with what I have, and that is truly enough.','Rest is not a reward — it is a necessity and I deserve it.','I allow myself to ask for support without shame or hesitation.','Every day I choose to show up for myself is a victory worth celebrating.']}
+},
+tips:{
+elem:[{icon:'🌬️',bg:'#e1f5ee',tc:'#085041',title:'Take deep breaths',text:'When you feel upset, breathe in slowly for 4 counts, hold for 2, then breathe out for 4. This calms your whole body and mind.'},{icon:'🤝',bg:'#e6f1fb',tc:'#042C53',title:'Talk to a grown-up',text:'If you feel sad, scared, angry, or confused, tell a trusted adult like a parent, teacher, or counselor. You do not have to carry your feelings alone.'},{icon:'🏃',bg:'#fff4e6',tc:'#7A4800',title:'Move your body',text:'Dancing, playing outside, or exercising for even 10 minutes can lift your mood and help reduce feelings of stress or sadness.'},{icon:'😴',bg:'#f3eeff',tc:'#26215C',title:'Get enough sleep',text:'Your brain and body heal during sleep. Try to go to bed at the same time each night and put screens away before bedtime.'},{icon:'✏️',bg:'#fff0f0',tc:'#7A1A1A',title:'Draw or write your feelings',text:'Drawing pictures or writing in a journal can help you understand and express how you feel inside — and that is very healthy!'},{icon:'🌟',bg:'#eafaf1',tc:'#0b4619',title:'Celebrate small wins',text:'Did you try something new? Finish something hard? Be proud of yourself! Every small step forward deserves to be celebrated.'}],
+mid:[{icon:'🧘',bg:'#e1f5ee',tc:'#085041',title:'Practice mindfulness',text:'Take 5 minutes to focus on what you see, hear, and feel around you. Mindfulness reduces anxiety and brings your attention back to the present moment.'},{icon:'🚧',bg:'#e6f1fb',tc:'#042C53',title:'Set healthy limits',text:'It is okay to say no to things that drain your energy. Protecting your time and well-being is not selfish — it is absolutely necessary.'},{icon:'📵',bg:'#fff4e6',tc:'#7A4800',title:'Limit social media',text:'Too much social media can increase anxiety and fuel unhealthy comparisons. Try setting screen time limits and take intentional breaks from scrolling.'},{icon:'💬',bg:'#f3eeff',tc:'#26215C',title:'Talk to someone you trust',text:'Sharing what you are going through with a friend, family member, or school counselor can help you feel less alone and more supported.'},{icon:'📓',bg:'#fff0f0',tc:'#7A1A1A',title:'Keep a gratitude journal',text:'Each night, write down 3 things you are grateful for. This simple habit trains your brain to notice the positive and gradually lifts your mood.'},{icon:'💪',bg:'#eafaf1',tc:'#0b4619',title:'Remind yourself of your strengths',text:'When you are struggling, make a list of things you are good at or proud of. Remembering your strengths helps you get through hard days.'}],
+high:[{icon:'💭',bg:'#e1f5ee',tc:'#085041',title:'Challenge negative self-talk',text:'When you notice a harsh thought about yourself, pause and ask: "Would I say this to someone I love?" Then replace it with something truthful and kind.'},{icon:'🔍',bg:'#e6f1fb',tc:'#042C53',title:'Recognize your stress signals',text:'Learn your personal stress signals — a tight chest, headaches, irritability. Early awareness helps you respond before reaching a breaking point.'},{icon:'🤲',bg:'#fff4e6',tc:'#7A4800',title:'Build a support system',text:'Identify 2-3 trusted people you can talk to honestly. Human connection is one of the most powerful protective factors for mental health.'},{icon:'😴',bg:'#f3eeff',tc:'#26215C',title:'Protect your sleep',text:'Sleep deprivation significantly worsens anxiety and depression. Prioritize 8-9 hours and create a consistent, calming bedtime routine.'},{icon:'🙋',bg:'#fff0f0',tc:'#7A1A1A',title:'Seek help without shame',text:'Talking to a counselor, therapist, or trusted adult is a sign of self-awareness and strength — not weakness. Mental health support is for everyone.'},{icon:'🎯',bg:'#eafaf1',tc:'#0b4619',title:'Focus on what you can control',text:'You cannot control everything that happens to you, but you can control how you respond. Redirect your energy toward things within your power.'}],
+adult:[{icon:'💚',bg:'#e1f5ee',tc:'#085041',title:'Practice self-compassion',text:'Treat yourself with the same kindness you would offer a close friend. Acknowledge your pain without judgment and remember that struggle is part of being human.'},{icon:'🔄',bg:'#e6f1fb',tc:'#042C53',title:'Build a wellness routine',text:'Consistent small habits — adequate sleep, movement, nourishing food, and connection — form the foundation of mental wellness more than any single intervention.'},{icon:'🚪',bg:'#fff4e6',tc:'#7A4800',title:'Set and honor your limits',text:'Healthy limits in relationships and work protect your energy and reduce resentment. Communicating them clearly is a profound act of self-respect.'},{icon:'🧑‍⚕️',bg:'#f3eeff',tc:'#26215C',title:'Seek professional support',text:'Therapy and counseling are effective tools — not a last resort. Reaching out to a mental health professional is a proactive, courageous act of self-care.'},{icon:'📵',bg:'#fff0f0',tc:'#7A1A1A',title:'Protect your mental space',text:'Constant exposure to distressing news and social media increases anxiety. Set intentional times to check in with the world and protect the rest of your day.'},{icon:'🌱',bg:'#eafaf1',tc:'#0b4619',title:'Celebrate your progress',text:'Healing and growth are rarely dramatic — they show up in small daily choices. Acknowledge and celebrate the quiet, consistent effort you are making every day.'}]
+}
+};
+function buildWS(words){
+  const S=15,grid=Array.from({length:S},()=>Array(S).fill(''));
+  const placed=[];
+  function tryPlace(word){
+    const w=word.replace(/[^A-Z]/g,'');
+    for(let t=0;t<80;t++){
+      const dr=Math.random()<.5?0:1,dc=1-dr;
+      const mr=S-(dr?w.length:0),mc=S-(dc?w.length:0);
+      if(mr<=0||mc<=0)continue;
+      const r=Math.floor(Math.random()*mr),c=Math.floor(Math.random()*mc);
+      let ok=true;
+      for(let i=0;i<w.length;i++){const cell=grid[r+dr*i][c+dc*i];if(cell&&cell!==w[i]){ok=false;break;}}
+      if(ok){const cells=[];for(let i=0;i<w.length;i++){grid[r+dr*i][c+dc*i]=w[i];cells.push([r+dr*i,c+dc*i]);}placed.push({word:w,orig:word,cells});return true;}
+    }
+    return false;
+  }
+  words.forEach(w=>tryPlace(w));
+  const a='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(let r=0;r<S;r++)for(let c=0;c<S;c++)if(!grid[r][c])grid[r][c]=a[Math.floor(Math.random()*26)];
+  return{grid,placed};
+}
+function renderSearch(d){
+  wsData=buildWS(d.words);foundWords=new Set();selStart=null;selCells=[];
+  const{grid,placed}=wsData,S=grid.length;
+  let h=`<h2 class="section-title">${d.title}</h2><p class="section-desc">${d.desc}</p>`;
+  h+=`<button class="print-btn" onclick="window.print()">🖨️ Print This Sheet</button>`;
+  h+=`<div class="word-list" id="word-list">`;
+  d.words.forEach(w=>{h+=`<span class="word-badge" id="wb-${w.replace(/[^A-Z]/g,'')}">${w}</span>`;});
+  h+=`</div><div class="ws-grid" id="ws-grid">`;
+  for(let r=0;r<S;r++)for(let c=0;c<S;c++)h+=`<div class="ws-cell" id="wc-${r}-${c}" onmousedown="wsStart(${r},${c})" onmouseenter="wsMove(${r},${c})" onmouseup="wsEnd()">${grid[r][c]}</div>`;
+  h+=`</div><div class="print-note">Tip: Print this page from your browser to hand out to students.</div>`;
+  return h;
+}
+function wsStart(r,c){selStart=[r,c];selCells=[[r,c]];wsHL();}
+function wsMove(r,c){
+  if(!selStart)return;
+  const[sr,sc]=selStart,dr=r-sr,dc=c-sc,len=Math.max(Math.abs(dr),Math.abs(dc));
+  selCells=[];
+  if(len===0){selCells=[[sr,sc]];wsHL();return;}
+  if(Math.abs(dr)===0||Math.abs(dc)===0||(Math.abs(dr)===Math.abs(dc))){
+    const nr=dr===0?0:dr/Math.abs(dr),nc=dc===0?0:dc/Math.abs(dc);
+    for(let i=0;i<=len;i++)selCells.push([sr+nr*i,sc+nc*i]);
+  }
+  wsHL();
+}
+function wsEnd(){
+  if(!wsData||selCells.length<2){selStart=null;selCells=[];wsHL();return;}
+  const found=wsData.placed.find(p=>JSON.stringify(p.cells)===JSON.stringify(selCells));
+  if(found){
+    foundWords.add(found.word);
+    selCells.forEach(([r,c])=>{const el=document.getElementById(`wc-${r}-${c}`);if(el){el.classList.remove('selected');el.classList.add('found');}});
+    const b=document.getElementById(`wb-${found.word}`);if(b)b.classList.add('found');
+  }
+  selStart=null;selCells=[];wsHL();
+}
+function wsHL(){
+  document.querySelectorAll('.ws-cell').forEach(el=>{if(!el.classList.contains('found'))el.classList.remove('selected');});
+  selCells.forEach(([r,c])=>{const el=document.getElementById(`wc-${r}-${c}`);if(el&&!el.classList.contains('found'))el.classList.add('selected');});
+}
+function renderDots(d){
+  const pts=d.points;
+  let h=`<h2 class="section-title">${d.title}</h2><p class="section-desc">${d.desc}</p>`;
+  h+=`<button class="print-btn" onclick="window.print()">🖨️ Print This Sheet</button>`;
+  h+=`<div class="dots-wrap"><svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg"><rect width="380" height="260" rx="12" fill="#fafafa" stroke="#eee" stroke-width="1"/>`;
+  pts.forEach(([x,y],i)=>{h+=`<circle cx="${x}" cy="${y}" r="6" fill="none" stroke="#bbb" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="3" fill="#aaa"/><text x="${x+10}" y="${y+5}" font-size="11" fill="#999" font-family="Arial,sans-serif">${i+1}</text>`;});
+  h+=`</svg></div><div class="print-note">Use a pencil to connect each numbered dot in order. What shape will you discover?</div>`;
+  return h;
+}
+function renderAwords(items){
+  let h=`<h2 class="section-title">Affirmation Words</h2><p class="section-desc">Read each word and its meaning. Say it out loud, write it down, and carry it with you today.</p>`;
+  h+=`<button class="print-btn" onclick="window.print()">🖨️ Print This Sheet</button><div class="aff-grid">`;
+  items.forEach(({word,color,tc,bc,def})=>{h+=`<div class="aff-word-card" style="border-left-color:${bc};"><div class="aff-word-title" style="color:${bc};">${word}</div><div class="aff-word-def" style="color:${tc};">${def}</div></div>`;});
+  h+=`</div><div class="print-note">Try this: Circle your favorite word and write it somewhere you will see it every day.</div>`;
+  return h;
+}
+function renderAphrases(d){
+  let h=`<h2 class="section-title">Affirmation Phrases</h2><p class="section-desc">Read one phrase each morning. Say it out loud, believe it, and let it guide your day.</p>`;
+  h+=`<button class="print-btn" onclick="window.print()">🖨️ Print This Sheet</button><div class="phrase-list">`;
+  d.phrases.forEach((p,i)=>{h+=`<div class="phrase-card" style="border-left:4px solid ${d.colors[i]};"><div class="phrase-num" style="background:${d.colors[i]};color:${d.ncolors[i]};">${i+1}</div><div class="phrase-text">"${p}"</div></div>`;});
+  h+=`</div><div class="print-note">Try this: Pick your favorite phrase and write it on a sticky note. Put it somewhere you will see it every morning.</div>`;
+  return h;
+}
+function renderTips(items){
+  let h=`<h2 class="section-title">Helpful Wellness Tips</h2><p class="section-desc">Small, consistent habits make a big difference to your mental health. Try one of these today.</p>`;
+  h+=`<button class="print-btn" onclick="window.print()">🖨️ Print This Sheet</button><div class="tips-list">`;
+  items.forEach(({icon,bg,tc,title,text})=>{h+=`<div class="tip-card"><div class="tip-icon" style="background:${bg};">${icon}</div><div><div class="tip-title">${title}</div><div class="tip-text" style="color:${tc};">${text}</div></div></div>`;});
+  h+=`</div><div class="print-note">Remember: Taking care of your mental health is one of the most important things you can do for yourself.</div>`;
+  return h;
+}
+function render(){
+  const area=document.getElementById('content-area'),g=currentGrade;
+  if(currentTab==='search')area.innerHTML=renderSearch(DATA.search[g]);
+  else if(currentTab==='dots')area.innerHTML=renderDots(DATA.dots[g]);
+  else if(currentTab==='awords')area.innerHTML=renderAwords(DATA.awords[g]);
+  else if(currentTab==='aphrases')area.innerHTML=renderAphrases(DATA.aphrases[g]);
+  else if(currentTab==='tips')area.innerHTML=renderTips(DATA.tips[g]);
+}
+function showTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');if(b.getAttribute('onclick')===`showTab('${tab}')`)b.classList.add('active');});
+  render();
+}
+function setGrade(g){
+  currentGrade=g;
+  document.querySelectorAll('.grade-btn').forEach(b=>{b.classList.remove('active');if(b.getAttribute('onclick')===`setGrade('${g}')`)b.classList.add('active');});
+  render();
+}
+render();
+</script>
+</body>
+</html>
